@@ -1,0 +1,22 @@
+{
+  "name": "Bombe Airsoft",
+  "short_name": "Bombe Airsoft",
+  "description": "Application bombe pour parties d'airsoft",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#0a0e0a",
+  "theme_color": "#0a0e0a",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

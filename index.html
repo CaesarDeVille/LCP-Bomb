@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0e0a">
+<title>Bombe Airsoft</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ ECRAN ACCUEIL ============ -->
+<div id="screen-home" class="screen active">
+  <h1 class="title">💣 BOMBE AIRSOFT</h1>
+
+  <div class="bomb-list" id="bomb-list"></div>
+
+  <button class="btn btn-primary" id="btn-goto-settings">⚙ Paramètres / Gérer les bombes</button>
+</div>
+
+<!-- ============ ECRAN ARMEMENT (code armement) ============ -->
+<div id="screen-arm" class="screen">
+  <h2 class="subtitle" id="arm-bomb-name">Armer la bombe</h2>
+  <p class="hint">Entrez le code d'armement</p>
+  <div class="code-display" id="arm-code-display"></div>
+  <div class="keypad" id="arm-keypad"></div>
+  <button class="btn btn-secondary" id="btn-arm-cancel">Annuler</button>
+</div>
+
+<!-- ============ ECRAN BOMBE ACTIVE ============ -->
+<div id="screen-active" class="screen">
+  <div class="bomb-frame">
+
+    <!-- Nom de la bombe (entre les barres, au-dessus du LCD) -->
+    <div class="bomb-name-active" id="active-bomb-name"></div>
+
+    <!-- Zone affichage LCD (rectangle orange) -->
+    <div class="bomb-display">
+      <img src="Assets/Temps%20Restant.png" class="temps-restant-label" alt="TEMPS RESTANT">
+      <span id="active-timer" class="timer-val"></span>
+    </div>
+
+    <!-- Petit écran LCD secondaire (affichage code saisi) -->
+    <div class="bomb-secondary-lcd" id="secondary-lcd">
+      <span class="code-val" id="secondary-lcd-val"></span>
+    </div>
+
+    <!-- Zone pavé numérique -->
+    <div id="defuse-area" class="defuse-area"></div>
+
+    <!-- Bouton Paramètres -->
+    <button class="btn-settings" id="btn-settings" onclick="openModeModal()">
+      <img src="Assets/Bouton%20Param%C3%A8tres.png" alt="Paramètres">
+    </button>
+
+    <!-- Modale Paramètres -->
+    <div id="mode-modal" class="mode-modal hidden">
+      <div class="mode-modal-box">
+        <h3 class="mode-modal-title">⚙ Paramètres</h3>
+        <button class="btn-mode-choice" id="btn-mode-standard">
+          <span class="mode-icon">💣</span>
+          <span class="mode-name">Bombe Standard</span>
+          <span class="mode-desc">Désamorcer avant l'explosion</span>
+        </button>
+        <button class="btn-mode-choice" id="btn-mode-capture">
+          <span class="mode-icon">🚩</span>
+          <span class="mode-name">Bombe de Capture</span>
+          <span class="mode-desc">Capturer et tenir la zone</span>
+        </button>
+        <button class="btn-mode-choice" id="btn-goto-config">
+          <span class="mode-icon">🎛</span>
+          <span class="mode-name">Bombes Personnalisées</span>
+          <span class="mode-desc">Sélectionner, créer, modifier</span>
+        </button>
+        <button class="btn-mode-close" id="btn-mode-close">✕ Fermer</button>
+      </div>
+    </div>
+
+  </div>
+  <button class="btn btn-danger" id="btn-force-stop">⏹ Arrêt forcé (debug)</button>
+</div>
+
+<!-- ============ ECRAN EXPLOSION ============ -->
+<div id="screen-boom" class="screen">
+  <h1 class="boom-text">💥 BOOM 💥</h1>
+  <button class="btn btn-primary" id="btn-boom-back">Retour à l'accueil</button>
+</div>
+
+<!-- ============ ECRAN DESAMORCEE ============ -->
+<div id="screen-defused" class="screen">
+  <h1 class="defused-text">✅ BOMBE DÉSAMORCÉE</h1>
+  <button class="btn btn-primary" id="btn-defused-back">Retour à l'accueil</button>
+</div>
+
+<!-- ============ ECRAN MODE DE JEU ============ -->
+<div id="screen-mode" class="screen">
+  <h2 class="subtitle">⚙ Mode de Jeu</h2>
+
+  <button class="btn btn-mode" id="btn-mode-standard">
+    <span class="mode-icon">💣</span>
+    <span class="mode-name">Bombe Standard</span>
+    <span class="mode-desc">Désamorcer avant l'explosion</span>
+  </button>
+
+  <button class="btn btn-mode" id="btn-mode-capture">
+    <span class="mode-icon">🚩</span>
+    <span class="mode-name">Bombe de Capture</span>
+    <span class="mode-desc">Capturer et tenir la zone</span>
+  </button>
+
+  <button class="btn btn-secondary" id="btn-mode-back">← Retour</button>
+</div>
+
+<!-- ============ ECRAN BOMBES PERSONNALISÉES ============ -->
+<div id="screen-settings" class="screen">
+  <h2 class="subtitle">🎛 Bombes Personnalisées</h2>
+
+  <div class="bomb-config-list" id="bomb-config-list"></div>
+
+  <button class="btn btn-primary" id="btn-new-bomb">+ Nouvelle bombe</button>
+  <button class="btn btn-secondary" id="btn-settings-back">← Retour</button>
+</div>
+
+<!-- ============ ECRAN EDITION D'UNE BOMBE ============ -->
+<div id="screen-edit" class="screen">
+  <h2 class="subtitle">Configuration de la bombe</h2>
+
+  <div class="form-group">
+    <label>Nom de la bombe</label>
+    <input type="text" id="edit-name" placeholder="Ex: Bombe Site A">
+  </div>
+
+  <div class="form-group">
+    <label>Type de bombe</label>
+    <select id="edit-bomb-type">
+      <option value="standard">Bombe Standard</option>
+      <option value="capture">Bombe de Capture</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Temps avant explosion (secondes)</label>
+    <input type="number" id="edit-time" min="5" max="3600" value="40">
+  </div>
+
+  <div class="form-group">
+    <label>Mode d'armement</label>
+    <select id="edit-arm-mode">
+      <option value="none">Aucun code (appui direct)</option>
+      <option value="code">Code numérique</option>
+    </select>
+  </div>
+
+  <div class="form-group" id="edit-arm-code-group" style="display:none;">
+    <label>Code d'armement (4 chiffres)</label>
+    <input type="text" id="edit-arm-code" maxlength="4" placeholder="Ex: 1234" inputmode="numeric">
+  </div>
+
+  <div class="form-group" id="edit-defuse-mode-group">
+    <label>Mode de désamorçage</label>
+    <select id="edit-defuse-mode">
+      <option value="button">Appui simple sur un bouton</option>
+      <option value="code">Code numérique</option>
+      <option value="equation">Résoudre une équation</option>
+    </select>
+  </div>
+
+  <div class="form-group" id="edit-defuse-code-group" style="display:none;">
+    <label>Code de désamorçage (4 chiffres)</label>
+    <input type="text" id="edit-defuse-code" maxlength="4" placeholder="Ex: 5678" inputmode="numeric">
+  </div>
+
+  <div class="form-group" id="edit-equation-group" style="display:none;">
+    <label>Difficulté de l'équation</label>
+    <select id="edit-equation-difficulty">
+      <option value="easy">Facile (addition/soustraction)</option>
+      <option value="medium">Moyen (multiplication)</option>
+      <option value="hard">Difficile (multi-étapes)</option>
+    </select>
+  </div>
+
+  <div class="form-group" id="edit-equation-count-group" style="display:none;">
+    <label>Nombre d'équations à résoudre</label>
+    <input type="number" id="edit-equation-count" min="1" max="10" value="1">
+  </div>
+
+  <div class="form-group" id="edit-capture-teams-group" style="display:none;">
+    <label>Nom équipe Orange</label>
+    <input type="text" id="edit-orange-name" placeholder="ORANGE" maxlength="12">
+    <label style="margin-top:8px;">Nom équipe Bleue</label>
+    <input type="text" id="edit-blue-name" placeholder="BLEU" maxlength="12">
+  </div>
+
+  <div class="form-group" id="edit-capture-equation-group" style="display:none;">
+    <label>Équation requise pour capturer</label>
+    <select id="edit-capture-equation">
+      <option value="none">Non</option>
+      <option value="easy">Oui — Facile</option>
+      <option value="medium">Oui — Moyen</option>
+      <option value="hard">Oui — Difficile</option>
+    </select>
+  </div>
+
+  <div class="edit-buttons">
+    <button class="btn btn-primary" id="btn-save-bomb">💾 Enregistrer</button>
+    <button class="btn btn-danger" id="btn-delete-bomb">🗑 Supprimer</button>
+    <button class="btn btn-secondary" id="btn-edit-cancel">← Annuler</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
