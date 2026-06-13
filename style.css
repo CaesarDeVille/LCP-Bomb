@@ -15,7 +15,7 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: 'Courier New', monospace;
-  background: #0a0e0a;
+  background: #0C0C0B;
   color: #d4ffd4;
   overflow: hidden;
 }
@@ -217,7 +217,7 @@ html, body {
 
 /* ===== ACTIVE BOMB SCREEN ===== */
 #screen-active {
-  background: #000;
+  background: #0C0C0B;
   padding: 0;
 }
 
@@ -563,6 +563,11 @@ html, body {
 }
 
 .btn-mode-close:active { color: #ccc; border-color: #666; }
+
+.btn-mode-reset { border-color: #ff4444 !important; }
+.btn-mode-reset .mode-icon, .btn-mode-reset .mode-name { color: #ff6666 !important; }
+.btn-mode-reset .mode-desc { color: #ff444488 !important; }
+.btn-mode-reset:active { background: #3a0a0a !important; }
 
 /* ===== MODE DE JEU (ancien écran, gardé pour compat) ===== */
 .btn-mode {

@@ -724,6 +724,7 @@ document.getElementById('btn-defused-back').addEventListener('click', () => {
 });
 
 document.getElementById('btn-force-stop').addEventListener('click', () => {
+  document.getElementById('mode-modal').classList.add('hidden');
   stopAllTimers();
   renderBombList();
   showScreen('screen-home');

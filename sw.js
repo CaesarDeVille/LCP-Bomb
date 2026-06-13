@@ -1,10 +1,28 @@
-const CACHE_NAME = 'bombe-airsoft-v14';
+const CACHE_NAME = 'bombe-airsoft-v15';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
   './app.js',
-  './manifest.json'
+  './manifest.json',
+  './digital-7.ttf',
+  './icon-192.png',
+  './icon-512.png',
+  './Assets/BombScreen.png',
+  './Assets/Bouton Param%C3%A8tres.png',
+  './Assets/Temps%20Restant.png',
+  './Assets/0.png',
+  './Assets/1.png',
+  './Assets/2.png',
+  './Assets/3.png',
+  './Assets/4.png',
+  './Assets/5.png',
+  './Assets/6.png',
+  './Assets/7.png',
+  './Assets/8.png',
+  './Assets/9.png',
+  './Assets/Asterisk.png',
+  './Assets/Hashtag.png'
 ];
 
 self.addEventListener('install', (event) => {
